@@ -15,3 +15,11 @@ function unique(arr) {
         : (obj[typeof item + item] = true)
     })
 }
+
+// format a number 1234567890 --> 1,234,567,890
+function formatNum(num) {
+    if (typeof num !== 'number' && typeof num !== 'string') return false;
+    return String(num).split('').reverse().reduce((prev, next, index) => {
+        return next + (index % 3 ? '' : ',') + prev;
+    })
+}
