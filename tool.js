@@ -30,39 +30,51 @@ function isPlainObject(obj) {
 
 //extend or copy an object
 function extend(target, source) {
-    var args = [].slice.call(arguments),
-        prop, src, options, copy, copyIsArray, clone,
+    var target, source, options, copy, src, prop, clone, copyIsArray
+    deep = true,
+        args = _slice.call(arguments),
         len = args.length,
-        deep = true;
-    target = target || {};
-    if (typeof args[len - 1] === 'boolean') {
-        deep = args.pop();
+        last = args[len - 1],
+        i = 1;
+
+    if (last && typeof last === 'boolean') {
+        deep = last;
+        args.pop();
         len--;
     }
-    if (args.length === 1) {
-        source = target;
-        target = {};
-        args.unshift(target);
-        len++;
+
+    if (!len) {
+        return {};
     }
-    
-    for (var i = 1; i < len; i++) {
+
+    target = args[0] || {};
+
+    if (len === 1) {
+        target = this;
+        i--;
+    }
+
+    for (; i < len; i++) {
         if (options = args[i]) {
             for (prop in options) {
                 src = target[prop];
                 copy = options[prop];
-                if (src === copy) {
+                if (target === copy) {
                     continue;
                 }
-                if (deep && copy && (isPlainObject(copy) || (copyIsArray = Array.isArray(copy)))) {
-                    clone = !src ? copyIsArray ? [] : {} : src;
-                    target[prop] = extend(clone, copy)
-                } else if (copy) {
-                    target[prop] = copy;
+                if (deep && (isPlainObject(copy) || (copyIsArray = Array.isArray(copy)))) {
+                    if (copyIsArray) {
+                        copyIsArray = false;
+                        clone = src && Array.isArray(src) ? src : [];
+                    } else {
+                        clone = src && isPlainObject(src) ? src : {};
+                    }
+                    target[prop] = extend(clone, copy);
+                } else if (copy !== undefined) {
+                    target[prop] = copy
                 }
             }
         }
-
     }
     return target;
 }
