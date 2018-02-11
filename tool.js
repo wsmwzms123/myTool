@@ -30,8 +30,8 @@ function isPlainObject(obj) {
 
 //extend or copy an object
 function extend() {
-    var target, options, copy, src, prop, clone, copyIsArray
-    deep = true,
+    var target, options, copy, src, prop, clone, copyIsArray,
+        deep = true,
         args = _slice.call(arguments),
         len = args.length,
         last = args[len - 1],
