@@ -99,4 +99,4 @@ function extend () {
   return target
 }
 
-export { unique, formatNum, isPlainObject, extend }
+export { unique, formatNum, isPlainObject, extend, isType }
