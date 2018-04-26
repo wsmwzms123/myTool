@@ -99,4 +99,40 @@ function extend () {
   return target
 }
 
-export { unique, formatNum, isPlainObject, extend, isType }
+// debounce function
+function debounce (fn, delay = 60) {
+  if (!fn) return
+  let timer, first = true
+  return function (...args) {
+    if (first) {
+      fn.apply(this, args)
+      first = false
+    }
+    if (timer) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      fn.apply(this, args)
+    }, delay)
+  }
+}
+
+function throttle (fn, delay = 60) {
+  if (!fn) return
+  let timer, first = true
+  return function (...args) {
+    if (first) {
+      fn.apply(this, args)
+      first = false
+    }
+    if (timer) {
+      return false
+    }
+    timer = setTimeout(() => {
+      fn.apply(this, args)
+      timer = null
+    }, delay)
+  }
+}
+
+export { unique, formatNum, isPlainObject, extend, isType, debounce, throttle }
